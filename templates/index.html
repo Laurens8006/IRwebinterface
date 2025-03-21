@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iracing dashboard</title>
+    <title>iRacing Dashboard</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -51,33 +51,28 @@
             color: #ff6600;
         }
     </style>
-<script>
-    function updateData() {
-        fetch('/data')
-            .then(response => response.json())
-            .then(data => {
-                let speed = data.speed_kmph.toFixed(0);
-                if (speed < 100) {
-                    speed = '0' + speed; 
-                } 
-                if (parseInt(speed) === 69) {
-                    speed = '<p> HAHA NICE </p>' + speed; 
-                } 
+    <script>
+        function updateData() {
+            fetch('/data')
+                .then(response => response.json())
+                .then(data => {
+                    let speed = Math.floor(data.speed_kmph).toString().padStart(3, '0');
+                    if (parseInt(speed) === 69) {
+                        speed = '<p>HAHA NICE</p>' + speed;
+                    }
 
+                    document.getElementById('speed').innerHTML = speed + ' km/h'; 
+                    document.getElementById('gear').innerText = data.gear;
+                    document.getElementById('rpm').innerText = data.rpm;
+                    document.getElementById('predicted_time').innerText = data.predicted_time.toFixed(2) + ' min';
+                    document.getElementById('best_time').innerText = data.best_time ? data.best_time.toFixed(2) + 's' : 'N/A';
+                    document.getElementById('car_ahead').innerText = data.car_dist_ahead ? data.car_dist_ahead.toFixed(1) + 'm' : 'N/A';
+                    document.getElementById('car_behind').innerText = data.car_dist_behind ? data.car_dist_behind.toFixed(1) + 'm' : 'N/A';
+                });
+        }
 
-
-                document.getElementById('speed').innerHTML = speed + ' km/h'; 
-                document.getElementById('gear').innerText = data.gear;
-                document.getElementById('rpm').innerText =  data.rpm;
-                document.getElementById('predicted_time').innerText = data.predicted_time.toFixed(2) + ' min';
-                document.getElementById('best_time').innerText = (data.best_time ? data.best_time.toFixed(2) + 's' : 'N/A');
-                document.getElementById('car_ahead').innerText = (data.car_dist_ahead ? data.car_dist_ahead.toFixed(1) + 'm' : 'N/A');
-                document.getElementById('car_behind').innerText = (data.car_dist_behind ? data.car_dist_behind.toFixed(1) + 'm' : 'N/A');
-            });
-    }
-    setInterval(updateData, 100); 
-</script>
-
+        setInterval(updateData, 100); 
+    </script>
 </head>
 <body>
     <div class="dashboard">
@@ -86,8 +81,10 @@
         <div class="data-box rpm">RPM: <span id="rpm">0</span></div>
         <div class="data-box times">Predicted Time: <span id="predicted_time">0.00 min</span></div>
         <div class="data-box times">Best Time: <span id="best_time">N/A</span></div>
-        <div class="data-box distance">CA: <span id="car_ahead">N/A</span>
-        CB  : <span id="car_behind">N/A</span></div>
+        <div class="data-box distance">
+            CA: <span id="car_ahead">N/A</span> |
+            CB: <span id="car_behind">N/A</span>
+        </div>
     </div>
 </body>
 </html>
