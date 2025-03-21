@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iRacing Telemetry</title>
+    <script>
+        function updateData() {
+            fetch('/data')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('speed').innerText = data.speed_kmph.toFixed(1) + ' km/h';
+                    document.getElementById('gear').innerText = 'Gear: ' + data.gear;
+                    document.getElementById('rpm').innerText = 'RPM: ' + data.rpm;
+                    document.getElementById('predicted_time').innerText = 'Predicted Time: ' + data.predicted_time.toFixed(2) + ' minutes';
+                    document.getElementById('best_time').innerText = 'Best Time: ' + (data.best_time ? data.best_time.toFixed(2) + 's' : 'N/A');
+                });
+        }
+        setInterval(updateData, 100);  // Refresh every 100 ms
+    </script>
+</head>
+<body>
+    <h1>iRacing Telemetry</h1>
+    <p>Speed: <span id="speed">0</span></p>
+    <p>Gear: <span id="gear">0</span></p>
+    <p>RPM: <span id="rpm">0</span></p>
+
+</body>
+</html>
