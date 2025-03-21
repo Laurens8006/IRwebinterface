@@ -4,6 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iRacing Telemetry</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: #0f0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #0f0;
+            min-width: 300px;
+        }
+        .data-box {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .speed {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff0;
+        }
+        .gear {
+            font-size: 40px;
+            color: #f00;
+        }
+        .rpm {
+            font-size: 30px;
+            color: #0ff;
+        }
+        .times {
+            font-size: 20px;
+            color: #fff;
+        }
+    </style>
     <script>
         function updateData() {
             fetch('/data')
@@ -12,18 +55,20 @@
                     document.getElementById('speed').innerText = data.speed_kmph.toFixed(1) + ' km/h';
                     document.getElementById('gear').innerText = 'Gear: ' + data.gear;
                     document.getElementById('rpm').innerText = 'RPM: ' + data.rpm;
-                    document.getElementById('predicted_time').innerText = 'Predicted Time: ' + data.predicted_time.toFixed(2) + ' minutes';
+                    document.getElementById('predicted_time').innerText = 'Predicted Time: ' + data.predicted_time.toFixed(2) + ' min';
                     document.getElementById('best_time').innerText = 'Best Time: ' + (data.best_time ? data.best_time.toFixed(2) + 's' : 'N/A');
                 });
         }
-        setInterval(updateData, 100);  // Refresh every 100 ms
+        setInterval(updateData, 100);  
     </script>
 </head>
 <body>
-    <h1>iRacing Telemetry</h1>
-    <p>Speed: <span id="speed">0</span></p>
-    <p>Gear: <span id="gear">0</span></p>
-    <p>RPM: <span id="rpm">0</span></p>
-
+    <div class="dashboard">
+        <div class="data-box speed">Speed: <span id="speed">0</span></div>
+        <div class="data-box gear">Gear: <span id="gear">0</span></div>
+        <div class="data-box rpm">RPM: <span id="rpm">0</span></div>
+        <div class="data-box times">Predicted Time: <span id="predicted_time">0.00 min</span></div>
+        <div class="data-box times">Best Time: <span id="best_time">N/A</span></div>
+    </div>
 </body>
 </html>
